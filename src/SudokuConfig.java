@@ -1,5 +1,10 @@
 /**
- * Created by Stephen on 1/11/2016.
+ * @author Stephen Kim
+ * Created: January 11th, 2016
+ *
+ * SudokuConfig.java defines what a Sudoku configuration (board) is as well as
+ * implements methods necessary to execute a backtracking algorithm
+ *
  */
 
 import java.util.ArrayList;
@@ -90,7 +95,7 @@ public class SudokuConfig {
         // maps a number to how many times it has occurred
         HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
         for (int i = col; i < this.BOARD_DIM; i++) {
-            if ( this.board[row][i] == 0)
+            if ( this.board[row][i] == EMPTY)
                 continue;
             else if ( ! numCount.containsKey(this.board[row][i]))
                 numCount.put(this.board[row][i], 1);
@@ -113,7 +118,7 @@ public class SudokuConfig {
         // maps a number to how many times it has occurred
         HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
         for (int i = row; i < this.BOARD_DIM; i++) {
-            if ( this.board[i][col] == 0)
+            if ( this.board[i][col] == EMPTY)
                 continue;
             else if ( ! numCount.containsKey(this.board[i][col]))
                 numCount.put(this.board[i][col], 1);

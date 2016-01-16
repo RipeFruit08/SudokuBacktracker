@@ -1,5 +1,9 @@
 /**
- * Created by Stephen on 1/12/2016.
+ * @author Stephen Kim
+ * Created: January 12th, 2016
+ *
+ * SudokuSolver.java is the main program that solves a sudoku puzzle
+ *
  */
 
 import java.io.File;
@@ -8,10 +12,17 @@ import java.util.Scanner;
 
 public class SudokuSolver {
 
+    /**
+     * solve is the backtracking algorithm for a SudokuConfig
+     * @param config - A SudokuConfig object
+     * @param debug - A boolean flag for debugging
+     * @return solution, a SudokuConfig that is completed and correct
+     */
     public static SudokuConfig solve(SudokuConfig config, boolean debug){
 
         SudokuConfig solution = null;
 
+        // probably need to get rid of this block
         if ( debug ) {
             System.out.println("Solve was called");
 
@@ -48,20 +59,32 @@ public class SudokuSolver {
         return solution;
     }
 
+    /**
+     * Note: Main program MUST be run in one of two configurations
+     *     1. Program run with 0 arguments
+     *     2. Prgroam run with 2 arguments.
+     *         -Argument 1 is the filename
+     *         -Argument 2 is true/false (debug flag)
+     * @param args - A string array containing arguments
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException{
         String filename;
         boolean debug = false;
 
+        // get filename from user input if 0 arguments are passed in
         if (args.length == 0){
             Scanner input = new Scanner(System.in);
             System.out.print("Enter filename of the board: ");
             filename = input.next();
         }
 
+        // grabs the filename and debug from args
         else {
             filename = args[0];
             debug = Boolean.valueOf(args[1]);
         }
+
         System.out.println("Filename: " + filename);
         File file = new File(filename);
         Scanner f = new Scanner(file);
