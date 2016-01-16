@@ -37,7 +37,7 @@ public class SudokuSolver {
             for ( SudokuConfig succesor: config.getSuccessors()){
 
                 if ( succesor.isValid()) {
-
+                    System.out.println("Valid successor" + succesor);
                     solution = solve(succesor);
 
                     if (solution != null)

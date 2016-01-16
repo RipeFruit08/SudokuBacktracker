@@ -41,19 +41,22 @@ public class SudokuConfig {
     }
 
     public boolean isValid(){
+        int validations = 0;
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
+
                 if ( j == 0){
-                    validateRow(i, j);
+                    validations += validateRow(i, j) == true ? 1 : 0;
                 }
 
                 if ( i == 0) {
-                    //validateCol(i, j);
+                    validations += validateCol(i, j) == true ? 1 : 0;
                 }
 
                 if ( (isMultiple(i, this.box) || i == 0) &&
                         (isMultiple(j, this.box) || j == 0) ){
                     //System.out.printf("Looking at a box with coordinates (%d, %d)\n", i, j);
+                    validations += validateBox(i, j) == true ? 1 : 0;
                 }
 
 
@@ -61,6 +64,8 @@ public class SudokuConfig {
 
 
         }
+        if ( validations != 3* this.BOARD_DIM)
+            return false;
         System.out.println();
         return true;
     }
@@ -68,9 +73,7 @@ public class SudokuConfig {
     public boolean validateRow(int row, int col){
         // maps a number to how many times it has occurred
         HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
-        System.out.printf("Validating row %d\n\n", row);
         for (int i = col; i < this.BOARD_DIM; i++) {
-            System.out.printf("Coordinate (%d, %d) contains %d\n", row, i, this.board[row][i]);
             if ( this.board[row][i] == 0)
                 continue;
             else if ( ! numCount.containsKey(this.board[row][i]))
@@ -83,15 +86,55 @@ public class SudokuConfig {
         }
 
         for( Integer count: numCount.values()){
-            if ( count > 1)
+            if ( count > 1) {
                 return false;
+            }
         }
-        System.out.printf("Row %d is valid!\n", row);
         return true;
     }
 
     public boolean validateCol(int row, int col){
-        System.out.printf("Validating col %d\n", col);
+        // maps a number to how many times it has occurred
+        HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
+        for (int i = row; i < this.BOARD_DIM; i++) {
+            if ( this.board[i][col] == 0)
+                continue;
+            else if ( ! numCount.containsKey(this.board[i][col]))
+                numCount.put(this.board[i][col], 1);
+
+            else{
+                int oldval = numCount.get(this.board[i][col]);
+                numCount.put(this.board[i][col], oldval+1);
+            }
+        }
+
+        for( Integer count: numCount.values()){
+            if ( count > 1)
+                return false;
+        }
+        return true;
+    }
+
+    public boolean validateBox(int row, int col){
+        HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
+        for (int i = row; i < row+this.box; i++) {
+            for (int j = col; j < col + this.box; j++) {
+                if ( this.board[i][j] == 0)
+                    continue;
+                else if ( ! numCount.containsKey(this.board[i][j]))
+                    numCount.put(this.board[i][j], 1);
+
+                else{
+                    int oldval = numCount.get(this.board[i][j]);
+                    numCount.put(this.board[i][j], oldval+1);
+                }
+            }
+        }
+
+        for( Integer count: numCount.values()){
+            if ( count > 1)
+                return false;
+        }
         return true;
     }
 
