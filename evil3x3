@@ -1,3 +1,7 @@
+# This is a standard sudoku board with 3x3 boxes
+# Difficulty: Evil
+# source: www.websudoku.com
+
 9
 1 0 0 0 6 3 7 0 0
 0 0 0 0 0 0 0 5 0

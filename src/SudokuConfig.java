@@ -17,7 +17,24 @@ public class SudokuConfig {
     private int[][] board;
 
     public SudokuConfig(Scanner f){
-        this.BOARD_DIM = Integer.parseInt(f.nextLine());
+        String line = f.nextLine();
+
+        while ( true ){
+            if ( line.isEmpty()) {
+                System.out.println();
+                line = f.nextLine();
+            }
+            else{
+                if ( Character.isDigit( line.charAt(0) ) )
+                    break;
+                else{
+                    System.out.println(line);
+                    line = f.nextLine();
+                }
+            }
+        }
+
+        this.BOARD_DIM = Integer.parseInt(line);
         box = (int)Math.sqrt(this.BOARD_DIM);
         this.board = new int[this.BOARD_DIM][this.BOARD_DIM];
 
@@ -66,7 +83,6 @@ public class SudokuConfig {
         }
         if ( validations != 3* this.BOARD_DIM)
             return false;
-        System.out.println();
         return true;
     }
 

@@ -8,10 +8,9 @@ import java.util.Scanner;
 
 public class SudokuSolver {
 
-    public static SudokuConfig solve(SudokuConfig config){
+    public static SudokuConfig solve(SudokuConfig config, boolean debug){
 
         SudokuConfig solution = null;
-        boolean debug = false;
 
         if ( debug ) {
             System.out.println("Solve was called");
@@ -37,8 +36,8 @@ public class SudokuSolver {
             for ( SudokuConfig succesor: config.getSuccessors()){
 
                 if ( succesor.isValid()) {
-                    System.out.println("Valid successor" + succesor);
-                    solution = solve(succesor);
+                    //System.out.println("Valid successor" + succesor);
+                    solution = solve(succesor, debug);
 
                     if (solution != null)
                         return solution;
@@ -51,6 +50,7 @@ public class SudokuSolver {
 
     public static void main(String[] args) throws FileNotFoundException{
         String filename;
+        boolean debug = false;
 
         if (args.length == 0){
             Scanner input = new Scanner(System.in);
@@ -58,9 +58,10 @@ public class SudokuSolver {
             filename = input.next();
         }
 
-        else
+        else {
             filename = args[0];
-
+            debug = Boolean.valueOf(args[1]);
+        }
         System.out.println("Filename: " + filename);
         File file = new File(filename);
         Scanner f = new Scanner(file);
@@ -70,7 +71,7 @@ public class SudokuSolver {
         System.out.println("Initial Configuration:");
         System.out.println(initBoard);
 
-        SudokuConfig solution = solve(initBoard);
+        SudokuConfig solution = solve(initBoard, debug);
 
         if(solution != null){
             System.out.println("Solution:");
