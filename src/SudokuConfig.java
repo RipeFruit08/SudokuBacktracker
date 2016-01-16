@@ -5,6 +5,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class SudokuConfig {
 
@@ -43,16 +44,16 @@ public class SudokuConfig {
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
                 if ( j == 0){
-                    System.out.printf("Looking at row %d from coordinate (%d, %d)\n", i, i, j);
+                    validateRow(i, j);
                 }
 
                 if ( i == 0) {
-                    System.out.printf("Looking at column %d from coordinate (%d, %d)\n", j, i, j);
+                    //validateCol(i, j);
                 }
 
                 if ( (isMultiple(i, this.box) || i == 0) &&
                         (isMultiple(j, this.box) || j == 0) ){
-                    System.out.printf("Looking at a box with coordinates (%d, %d)\n", i, j);
+                    //System.out.printf("Looking at a box with coordinates (%d, %d)\n", i, j);
                 }
 
 
@@ -61,6 +62,36 @@ public class SudokuConfig {
 
         }
         System.out.println();
+        return true;
+    }
+
+    public boolean validateRow(int row, int col){
+        // maps a number to how many times it has occurred
+        HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
+        System.out.printf("Validating row %d\n\n", row);
+        for (int i = col; i < this.BOARD_DIM; i++) {
+            System.out.printf("Coordinate (%d, %d) contains %d\n", row, i, this.board[row][i]);
+            if ( this.board[row][i] == 0)
+                continue;
+            else if ( ! numCount.containsKey(this.board[row][i]))
+                numCount.put(this.board[row][i], 1);
+
+            else{
+                int oldval = numCount.get(this.board[row][i]);
+                numCount.put(this.board[row][i], oldval+1);
+            }
+        }
+
+        for( Integer count: numCount.values()){
+            if ( count > 1)
+                return false;
+        }
+        System.out.printf("Row %d is valid!\n", row);
+        return true;
+    }
+
+    public boolean validateCol(int row, int col){
+        System.out.printf("Validating col %d\n", col);
         return true;
     }
 
