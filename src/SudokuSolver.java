@@ -35,10 +35,14 @@ public class SudokuSolver {
                 System.out.println("Current Board:\n" + config);
 
             for ( SudokuConfig succesor: config.getSuccessors()){
-                solution = solve(succesor);
 
-                if ( solution != null )
-                    return solution;
+                if ( succesor.isValid()) {
+
+                    solution = solve(succesor);
+
+                    if (solution != null)
+                        return solution;
+                }
             }
         }
 

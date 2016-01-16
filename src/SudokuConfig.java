@@ -39,6 +39,31 @@ public class SudokuConfig {
         }
     }
 
+    public boolean isValid(){
+        for (int i = 0; i < this.BOARD_DIM; i++) {
+            for (int j = 0; j < this.BOARD_DIM; j++) {
+                if ( j == 0){
+                    System.out.printf("Looking at row %d from coordinate (%d, %d)\n", i, i, j);
+                }
+
+                if ( i == 0) {
+                    System.out.printf("Looking at column %d from coordinate (%d, %d)\n", j, i, j);
+                }
+
+                if ( (isMultiple(i, this.box) || i == 0) &&
+                        (isMultiple(j, this.box) || j == 0) ){
+                    System.out.printf("Looking at a box with coordinates (%d, %d)\n", i, j);
+                }
+
+
+            }
+
+
+        }
+        System.out.println();
+        return true;
+    }
+
     public boolean isGoal(){
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
