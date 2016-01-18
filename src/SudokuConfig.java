@@ -21,6 +21,10 @@ public class SudokuConfig {
     private int box;
     private int[][] board;
 
+    /**
+     * Constructor for a SudokuConfig; takes in a Scanner as a parameter
+     * @param f - A Scanner object that is made from a File object
+     */ 
     public SudokuConfig(Scanner f){
         String line = f.nextLine();
 
@@ -51,6 +55,11 @@ public class SudokuConfig {
         }
     }
 
+    /**
+     * Constructor of a SudokuConfig; takes in a SudokuConfig as a parameter
+     * Makes an exact deep copy of the parameter
+     * @param copy - A SudokuConfig object
+     */
     public SudokuConfig(SudokuConfig copy){
         this.BOARD_DIM = copy.BOARD_DIM;
         this.box = copy.box;
@@ -62,22 +71,34 @@ public class SudokuConfig {
         }
     }
 
+    /**
+     * isValid determines whether a SudokuConfig is valid; checks 3 things
+     *    * every ROW does not contain duplicate numbers
+     *    * every COL does not contain duplicate numbers
+     *    * every BOX does not contain duplicate numbers
+     * @return true if the SudokuConfig is valid, false otherwise
+     */ 
     public boolean isValid(){
+
+        // the total number of valid rows/cols/boxes
         int validations = 0;
+
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
 
+                // validating rows
                 if ( j == 0){
                     validations += validateRow(i, j) == true ? 1 : 0;
                 }
 
+                // validating columns
                 if ( i == 0) {
                     validations += validateCol(i, j) == true ? 1 : 0;
                 }
 
+                // validating boxes 
                 if ( (isMultiple(i, this.box) || i == 0) &&
                         (isMultiple(j, this.box) || j == 0) ){
-                    //System.out.printf("Looking at a box with coordinates (%d, %d)\n", i, j);
                     validations += validateBox(i, j) == true ? 1 : 0;
                 }
 
@@ -86,8 +107,11 @@ public class SudokuConfig {
 
 
         }
+        // On any Sudoku board, if every row, col, and box is valid, then the
+        // total validations should be equal to 3 times BOARD_DIM
         if ( validations != 3* this.BOARD_DIM)
             return false;
+
         return true;
     }
 
@@ -95,6 +119,7 @@ public class SudokuConfig {
         // maps a number to how many times it has occurred
         HashMap<Integer, Integer> numCount = new HashMap<Integer, Integer>();
         for (int i = col; i < this.BOARD_DIM; i++) {
+
             if ( this.board[row][i] == EMPTY)
                 continue;
             else if ( ! numCount.containsKey(this.board[row][i]))
@@ -142,6 +167,7 @@ public class SudokuConfig {
             for (int j = col; j < col + this.box; j++) {
                 if ( this.board[i][j] == 0)
                     continue;
+
                 else if ( ! numCount.containsKey(this.board[i][j]))
                     numCount.put(this.board[i][j], 1);
 
