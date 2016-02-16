@@ -80,9 +80,14 @@ public class SudokuSolver {
         }
 
         // grabs the filename and debug from args
-        else {
+        else if ( args.length == 2){
             filename = args[0];
             debug = Boolean.valueOf(args[1]);
+        }
+
+        else{
+            System.out.println("Usage: [boardconfig debugmode]");
+            return;
         }
 
         System.out.println("Filename: " + filename);
