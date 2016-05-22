@@ -97,6 +97,10 @@ public class SudokuModel {
     public boolean solve(){
         if ( isGoal() )
             return true;
+
+        int oldR = this.curRow;
+        int oldC = this.curCol;
+
         for ( int i = 1; i < 10; i++){
             makeSuccessor(i);
             System.out.println(this); 
@@ -107,10 +111,66 @@ public class SudokuModel {
             board[curRow][curCol] = 0;
         }
 
+        curRow = oldR;
+        curCol = oldC;
         return false;
     }
     
     public boolean isValid(){
+        if ( !validate_col(curCol) )
+            return false;
+
+        if ( !validate_row(curRow) )
+            return false;
+
+        return true;
+    }
+
+    public boolean validate_col(int c){
+        /* corresponds to occurrences of a particular numbers */
+        /* the index = the number that is having occurrences counted */
+        /* the value at the index = the occurrences*/
+        int[] numCount = {0,0,0,0,0,0,0,0,0};
+
+        /* Populating occurrences of each number in the column*/
+        for ( int r = 0; r < BOARD_DIM; r++ ){
+            int cellVal = this.board[r][curCol];
+            if ( cellVal == 0 )
+                continue;
+            else{
+                numCount[cellVal-1]++;
+            }
+
+        }
+
+        for ( int i = 0; i < numCount.length; i++ ){
+            if ( numCount[i] > 1 )
+                return false;
+        }
+        return true;
+    }
+
+    public boolean validate_row(int r){
+        /* corresponds to occurrences of a particular numbers */
+        /* the index = the number that is having occurrences counted */
+        /* the value at the index = the occurrences*/
+        int[] numCount = {0,0,0,0,0,0,0,0,0};
+
+        /* Populating occurrences of each number in the row*/
+        for ( int c = 0; c < BOARD_DIM; c++ ){
+            int cellVal = this.board[curRow][c];
+            if ( cellVal == 0 )
+                continue;
+            else{
+                numCount[cellVal-1]++;
+            }
+
+        }
+
+        for ( int i = 0; i < numCount.length; i++ ){
+            if ( numCount[i] > 1 )
+                return false;
+        }
         return true;
     }
 

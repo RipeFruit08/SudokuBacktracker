@@ -16,7 +16,12 @@ public class SudokuText{
             SudokuModel m = new SudokuModel(f);
             System.out.println("initial board");
             System.out.println(m); 
-            m.solve();
+            if( m.solve() )
+                System.out.println("Solution:"); 
+
+            else
+                System.out.println("No solution"); 
+
             System.out.println(m); 
         }
 
