@@ -174,6 +174,11 @@ public class SudokuModel {
         return true;
     }
 
+    public boolean validate_box(){
+        int[] numCount = {0,0,0,0,0,0,0,0,0};
+
+    }
+
     public boolean isGoal(){
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
