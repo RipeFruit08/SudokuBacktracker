@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.HashMap;
@@ -87,10 +88,17 @@ public class SudokuModel {
     }
 
     public void makeSuccessor(int guess){
-        while ( board[curRow][curCol] != EMPTY )
+        while ( board[curRow][curCol] != EMPTY ){
             incrementCursor();
+            // if the bottom corner of box is already populated 
+            if ( isMultiple(curRow+1, box) && isMultiple(curCol+1, box)){
+                //System.out.printf("successor with coordinate (%d, %d)\n",
+                //    curRow, curCol);  
+                return;
+            }
+        }
         board[curRow][curCol] = guess;
-        System.out.printf("board[%d][%d] = %d\n", curRow, curCol, guess);  
+        //System.out.printf("board[%d][%d] = %d\n", curRow, curCol, guess);  
     }
 
 
@@ -101,9 +109,10 @@ public class SudokuModel {
         int oldR = this.curRow;
         int oldC = this.curCol;
 
+        // TODO: make this generic
         for ( int i = 1; i < 10; i++){
             makeSuccessor(i);
-            System.out.println(this); 
+            //System.out.println(this); 
             if ( isValid() ){
                 if ( solve() )
                     return true;
@@ -121,6 +130,9 @@ public class SudokuModel {
             return false;
 
         if ( !validate_row(curRow) )
+            return false;
+
+        if ( !validate_box() )
             return false;
 
         return true;
@@ -176,8 +188,33 @@ public class SudokuModel {
 
     public boolean validate_box(){
         int[] numCount = {0,0,0,0,0,0,0,0,0};
+        if ( curRow == 0 || curCol == 0 )
+            return true;
 
+        else if ( isMultiple(curRow+1, box) && isMultiple(curCol+1, box)){
+            //System.out.printf("Looking at a box at (%d, %d)\n", curRow, curCol);
+            for ( int r = curRow - (box-1); r < curRow; r++ ){
+                for ( int c = curCol - (box-1); c < curCol; c++ ){
+                    int cellVal = this.board[r][c];
+                    if ( cellVal == 0 )
+                        continue;
+                    else{
+                        numCount[cellVal-1]++;
+                    }
+                }
+            }
+
+            //System.out.println( Arrays.toString(numCount) ); 
+
+            for ( int i = 0; i < numCount.length; i++ ) {
+                if ( numCount[i] > 1 )
+                    return false;
+            }
+        }
+        return true;
     }
+
+
 
     public boolean isGoal(){
         for (int i = 0; i < this.BOARD_DIM; i++) {
