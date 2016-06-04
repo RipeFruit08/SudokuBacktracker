@@ -110,7 +110,7 @@ public class SudokuModel {
         int oldC = this.curCol;
 
         // TODO: make this generic
-        for ( int i = 1; i < 10; i++){
+        for ( int i = 1; i < BOARD_DIM+1; i++){
             makeSuccessor(i);
             //System.out.println(this); 
             if ( isValid() ){
@@ -142,7 +142,7 @@ public class SudokuModel {
         /* corresponds to occurrences of a particular numbers */
         /* the index = the number that is having occurrences counted */
         /* the value at the index = the occurrences*/
-        int[] numCount = {0,0,0,0,0,0,0,0,0};
+        int[] numCount = new int[BOARD_DIM];
 
         /* Populating occurrences of each number in the column*/
         for ( int r = 0; r < BOARD_DIM; r++ ){
@@ -166,7 +166,7 @@ public class SudokuModel {
         /* corresponds to occurrences of a particular numbers */
         /* the index = the number that is having occurrences counted */
         /* the value at the index = the occurrences*/
-        int[] numCount = {0,0,0,0,0,0,0,0,0};
+        int[] numCount = new int[BOARD_DIM];
 
         /* Populating occurrences of each number in the row*/
         for ( int c = 0; c < BOARD_DIM; c++ ){
@@ -187,7 +187,7 @@ public class SudokuModel {
     }
 
     public boolean validate_box(){
-        int[] numCount = {0,0,0,0,0,0,0,0,0};
+        int[] numCount = new int[BOARD_DIM];
         if ( curRow == 0 || curCol == 0 )
             return true;
 
