@@ -1,0 +1,100 @@
+6,8d5
+< import java.io.File;
+< import java.io.FileNotFoundException;
+< import java.util.Scanner;
+23,24c20
+<      * @param filename - A String representing the configuration filename
+<      *                   this will be used to create a Scanner
+---
+>      * @param f - A Scanner object that is made from a File object
+26,35c22
+<     public SudokuModel(String filename){
+<         File file;
+<         Scanner f = null;
+<         try{
+<             file = new File(filename);
+<             f = new Scanner(file);
+<         } catch(FileNotFoundException e){
+<             System.out.printf("file: %s was not found\n", filename);
+<             System.exit(-1);
+<         }
+---
+>     public SudokuModel(Scanner f){
+124a112
+>         // TODO: make this generic
+140,153d127
+<     /**
+<      * isValid is a method that gets called every time a successor is made
+<      * in the solve() method.
+<      *
+<      * note that this method does not validate the entire board. It only
+<      * validates the row, column, and box relative to the current coordinates
+<      * (curRow, curCol). This design decision was made because the backtracking
+<      * in solve() executes from left to right starting from the top left-most
+<      * empty cell.
+<      *
+<      * due to the nature of this method, a separate validation method
+<      * must be called in order to iterate through and validate the entire
+<      * board.
+<      */
+167,183d140
+<     /**
+<      * validates a column number denoted by c.
+<      *
+<      * the value of c should be within the bounds of [0, BOARD_DIM-1] 
+<      * (i.e. if the board is 9x9 then the bounds are [0, 8] )
+<      *
+<      * numCount will count the occurrences of the numbers in column c
+<      *   - the index = the number being counted[0, BOARD_DIM-1]
+<      *   - numCount[index] = the occurrence value of index
+<      *
+<      * this method will return true if every element in numCount is NOT greater
+<      * than 1 
+<      *
+<      * @param c - integer denoting the column number to validate
+<      * @return true if the column conforms to the rules of Sudoku columns
+<      *
+<      */
+184a142,144
+>         /* corresponds to occurrences of a particular numbers */
+>         /* the index = the number that is having occurrences counted */
+>         /* the value at the index = the occurrences*/
+205,221d164
+<     /**
+<      * validates a row number denoted by r.
+<      *
+<      * the value of r should be within the bounds of [0, BOARD_DIM-1] 
+<      * (i.e. if the board is 9x9 then the bounds are [0, 8] )
+<      *
+<      * numCount will count the occurrences of the numbers in row r 
+<      *   - the index = the number being counted [0, BOARD_DIM-1]
+<      *   - numCount[index] = the occurrence value of index
+<      *
+<      * this method will return true if every element in numCount is NOT greater
+<      * than 1 
+<      *
+<      * @param r - integer denoting the row number to validate
+<      * @return true if the row conforms to the rules of Sudoku row
+<      *
+<      */
+246,259d188
+<     /**
+<      * validates a box number relative to the board's current coordinates.
+<      *
+<      * numCount will count the occurrences of the numbers in a particular box 
+<      *   - the index = the number being counted [0, BOARD_DIM-1]
+<      *   - numCount[index] = the occurrence value of index
+<      *
+<      * this method will return true if every element in numCount is NOT greater
+<      * than 1 
+<      *
+<      * @param r - integer denoting the row number to validate
+<      * @return true if the row conforms to the rules of Sudoku row
+<      *
+<      */
+262d190
+<         // TODO: Figure out why i put this here
+335c263
+<         //board += "Current coord is (" + curRow + ", " + curCol + ")\n";
+---
+>         board += "Current coord is (" + curRow + ", " + curCol + ")\n";

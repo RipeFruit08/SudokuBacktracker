@@ -10,10 +10,10 @@ public class SudokuText{
         
         else{
             String filename = args[0];
-            File file = new File(filename);
-            Scanner f = new Scanner(file);
+            //File file = new File(filename);
+            //Scanner f = new Scanner(file);
 
-            SudokuModel m = new SudokuModel(f);
+            SudokuModel m = new SudokuModel(filename);
             System.out.println("initial board");
             System.out.println(m); 
             if( m.solve() )
