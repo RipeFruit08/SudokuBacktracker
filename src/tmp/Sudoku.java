@@ -12,17 +12,18 @@ public class Sudoku{
     }
 
     public static void main(String[] args){
-        if ( args.length < 2 || args.length > 2)
+        if ( args.length != 2)
             usageErr();
 
         else{
+            String filename = args[1];
             System.out.println("gets here"); 
             if ( args[0].equals("gui") )
                 System.out.println("will run the gui...");
                 
             else if ( args[0].equals("ptui") ){
                 System.out.println("will run the ptui");
-                SudokuPTUI ptui = new SudokuPTUI("fuck");
+                SudokuPTUI ptui = new SudokuPTUI(filename);
                 ptui.run();
             }
 

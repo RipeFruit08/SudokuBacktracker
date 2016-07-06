@@ -15,6 +15,7 @@ public class SudokuModel {
     private int BOARD_DIM;
     private int box;
     private int[][] board;
+    private int[][] refboard;
     private int curRow;
     private int curCol;
 
@@ -53,6 +54,7 @@ public class SudokuModel {
         this.BOARD_DIM = Integer.parseInt(line);
         box = (int)Math.sqrt(this.BOARD_DIM);
         this.board = new int[this.BOARD_DIM][this.BOARD_DIM];
+        this.refboard = new int[this.BOARD_DIM][this.BOARD_DIM];
 
         /* determining whether or not the coordinates has been initialized */
         boolean initCoord = false;
@@ -64,9 +66,11 @@ public class SudokuModel {
                     this.curCol = j;
                     initCoord = true;
                 }
-                board[i][j] = Integer.parseInt(token[j]);
+                board[i][j] = Integer.parseInt(token[j], 16);
+                refboard[i][j] = board[i][j];
             }
         }
+        f.close();
     }
 
     /**
@@ -89,7 +93,7 @@ public class SudokuModel {
      * the very bottom of the board because incrementCursor 
      * should be not called in that particular situation
      */
-    public void incrementCursor(){
+    private void incrementCursor(){
         if ( curCol == BOARD_DIM - 1 ){
             curCol = 0;
             curRow++;
@@ -121,7 +125,7 @@ public class SudokuModel {
      * @return false if the cursor reaches a bottom right corner of a sub-box
      *         AND the cell is populated. true otherwise
      */
-    public boolean makeSuccessor(int guess){
+    private boolean makeSuccessor(int guess){
         while ( board[curRow][curCol] != EMPTY ){
             incrementCursor();
             if ( isMultiple(curRow+1, box) && isMultiple(curCol+1, box)){
@@ -188,7 +192,7 @@ public class SudokuModel {
      *
      * @return true if the current configuration is valid, false otherwise
      */
-    public boolean isValid(){
+    private boolean isValid(){
         if ( !validate_col(curCol) )
             return false;
 
@@ -218,7 +222,7 @@ public class SudokuModel {
      * @return true if the column conforms to the rules of Sudoku columns
      *
      */
-    public boolean validate_col(int c){
+    private boolean validate_col(int c){
         int[] numCount = new int[BOARD_DIM];
 
         /* Populating occurrences of each number in the column*/
@@ -256,7 +260,7 @@ public class SudokuModel {
      * @return true if the row conforms to the rules of Sudoku row
      *
      */
-    public boolean validate_row(int r){
+    private boolean validate_row(int r){
         /* corresponds to occurrences of a particular numbers */
         /* the index = the number that is having occurrences counted */
         /* the value at the index = the occurrences*/
@@ -294,7 +298,7 @@ public class SudokuModel {
      * @return true if the row conforms to the rules of Sudoku row
      *
      */
-    public boolean validate_box(){
+    private boolean validate_box(){
         int[] numCount = new int[BOARD_DIM];
         // TODO: Figure out why i put this here
         if ( curRow == 0 || curCol == 0 )
@@ -334,7 +338,7 @@ public class SudokuModel {
      *
      * @return true if the board is filled, false otherwise 
      */
-    public boolean isGoal(){
+    private boolean isGoal(){
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
                 if ( this.board[i][j] == 0)
@@ -342,6 +346,62 @@ public class SudokuModel {
             }
         }
 
+        return true;
+    }
+
+    //
+    // methods for interactive mode
+    //
+    
+    /**
+     * determines whether a string is an integer or not;
+     * this method was taken from rosettacode.org
+     *
+     * TODO this needs to be modified to check if hex values are numbers
+     *
+     * @param s - a string that may or may not be an integer
+     * @return true if s is an integer, false otherwise
+     *
+     */
+    public static boolean isNumeric(String s) {
+        if (s == null || s.isEmpty()) return false;
+        for (int x = 0; x < s.length(); x++) {
+            final char c = s.charAt(x);
+
+            if (x == 0 && (c == '-')) 
+                continue;  // negative
+
+            if ((c >= '0') && (c <= '9')) 
+                continue;  // 0 - 9
+            return false; // invalid
+        }
+        return true; // valid
+    }
+    
+    private boolean validateCoords(int r, int c){
+        return r >= 0 && r <= (BOARD_DIM - 1) &&
+            c >= 0 && c <= (BOARD_DIM - 1);
+    }
+
+    public boolean addToBoard(int r, int c, int v){
+        // invalid coorindates
+        if ( !validateCoords(r, c) ){
+            System.out.printf("Invalid coordinates (%d, %d)\n", r, c);
+            return false;
+        }
+
+        // value is out of bounds
+        if ( v < 0 || v > BOARD_DIM ){
+            System.out.printf("Invalid value:  to place at (%d, %d)\n",r,c,v);  
+            return false;
+        }
+
+        if (this.refboard[r][c] != EMPTY){
+            System.out.println("Cannot change an initial cell"); 
+            return false;
+        }
+
+        this.board[r][c] = v;
         return true;
     }
 
@@ -371,7 +431,8 @@ public class SudokuModel {
                 if ( this.board[i][j] == 0)
                     board += ". ";
                 else
-                    board += this.board[i][j] + " ";
+                    board += Integer.toHexString(this.board[i][j]).toUpperCase()
+                        + " ";
             }
             board += "|\n";
         }
