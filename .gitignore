@@ -1,2 +1,5 @@
 # ignoring .class
 *.class
+
+# ignoring a debug file i often call err which is output but yields large files
+err
