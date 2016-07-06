@@ -62,8 +62,14 @@ public class SudokuPTUI{
         }
 
         // validate
-        else if (cmdlst[0].equals("validate") )
+        else if (cmdlst[0].equals("validate") ){
             System.out.println("The puzzle will be validated");
+            if ( !model.validate_board() )
+                System.out.println("The current board is not valid"); 
+        
+            else
+                System.out.println("The current board is valid"); 
+        }
 
         // add row col value
         else if (cmdlst[0].equals("add") ){

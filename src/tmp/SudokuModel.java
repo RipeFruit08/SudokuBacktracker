@@ -227,7 +227,7 @@ public class SudokuModel {
 
         /* Populating occurrences of each number in the column*/
         for ( int r = 0; r < BOARD_DIM; r++ ){
-            int cellVal = this.board[r][curCol];
+            int cellVal = this.board[r][c];
             if ( cellVal == 0 )
                 continue;
             else{
@@ -268,7 +268,7 @@ public class SudokuModel {
 
         /* Populating occurrences of each number in the row*/
         for ( int c = 0; c < BOARD_DIM; c++ ){
-            int cellVal = this.board[curRow][c];
+            int cellVal = this.board[r][c];
             if ( cellVal == 0 )
                 continue;
             else{
@@ -402,6 +402,49 @@ public class SudokuModel {
         }
 
         this.board[r][c] = v;
+        return true;
+    }
+
+    public boolean validate_one_box(int row, int col){
+        //System.out.printf("Looking at a box at (%d, %d)\n", row, col);
+        int[] numCount = new int[BOARD_DIM];
+        for ( int r = row; r < row+box; r++ ){
+            for ( int c = col; c < col+box; c++ ){
+                int cellVal = this.board[r][c];
+                //System.out.printf("(%d, %d): %d\n", r, c, cellVal); 
+                if ( cellVal == 0 )
+                    continue;
+                else
+                    numCount[cellVal-1]++;
+            }
+        }
+
+        for ( int i = 0; i < numCount.length; i++ ) {
+            if ( numCount[i] > 1 )
+                return false;
+        }
+        return true;
+
+    }
+
+    public boolean validate_board(){
+        for ( int r = 0; r < BOARD_DIM; r++ ){
+            if ( !validate_row(r) )
+                return false;
+        }
+
+        for ( int c = 0; c < BOARD_DIM; c++ ){
+            if ( !validate_col(c) )
+                return false;
+        }
+
+        for ( int r = 0; r < BOARD_DIM; r += box ){
+            for ( int c = 0; c < BOARD_DIM; c += box ){
+                if ( !validate_one_box(r, c) )
+                    return false; 
+            }
+        }
+        
         return true;
     }
 
