@@ -87,8 +87,18 @@ public class SudokuPTUI{
         }
 
         // del row col
-        else if (cmdlst[0].equals("del") )
+        else if (cmdlst[0].equals("del") ){
             System.out.println("deleting an element");
+            if ( cmdlst.length == 3 && SudokuModel.isNumeric(cmdlst[1]) &&
+                SudokuModel.isNumeric(cmdlst[2])){
+                
+                int row = Integer.parseInt(cmdlst[1]);
+                int col = Integer.parseInt(cmdlst[2]);
+                System.out.printf("Removing element from (%s, %s)\n", 
+                    cmdlst[1], cmdlst[2]);  
+                model.deleteElement(row, col);
+            }
+        }
 
         else
             System.out.println("not a valid cmd"); 

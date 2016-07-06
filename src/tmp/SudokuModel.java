@@ -405,6 +405,28 @@ public class SudokuModel {
         return true;
     }
 
+    public boolean deleteElement(int r, int c){
+        // invalid coorindates
+        if ( !validateCoords(r, c) ){
+            System.out.printf("Invalid coordinates (%d, %d)\n", r, c);
+            return false;
+        }
+
+        // can't delete empty cell
+        if (this.refboard[r][c] != EMPTY){
+            System.out.println("Cannot delete an initial element"); 
+            return false;
+        }
+
+        if (this.board[r][c] == EMPTY){
+            System.out.println("Cannot delete if the cell is empty");
+            return false;
+        }
+
+        this.board[r][c] = EMPTY;
+        return true;
+    }
+
     public boolean validate_one_box(int row, int col){
         //System.out.printf("Looking at a box at (%d, %d)\n", row, col);
         int[] numCount = new int[BOARD_DIM];
