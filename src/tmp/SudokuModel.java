@@ -378,11 +378,33 @@ public class SudokuModel {
         return true; // valid
     }
     
+    /**
+     * Method that validates a coordinate pair (r, c).
+     *
+     * @param r - an integer representing the row
+     * @param c - an integer representing the column
+     * 
+     * @return true if (r, c) is a valid coordinate pair, false otherwise
+     */
     private boolean validateCoords(int r, int c){
         return r >= 0 && r <= (BOARD_DIM - 1) &&
             c >= 0 && c <= (BOARD_DIM - 1);
     }
 
+    /**
+     * Given a coordinate pair (r, c) this method attempts to add
+     * v in the sudoku board at the coordinate pair's location.
+     *
+     * This method prevents from overwriting cells defined by the initial 
+     * configuration file. It also ensures valid coordinate pairs and a valid
+     * value to be placed at (r,c) in the board.
+     *
+     * @param r - an integer representing the row
+     * @param c - an integer representing the column
+     * @param v - an integer representing the value to be placed in (r, c)
+     *
+     * @return true if v was placed at (r,c) in the board, false otherwise 
+     */
     public boolean addToBoard(int r, int c, int v){
         // invalid coorindates
         if ( !validateCoords(r, c) ){
@@ -405,6 +427,19 @@ public class SudokuModel {
         return true;
     }
 
+    /**
+     * Given a coordinate pair (r, c) this method attempts to delete the 
+     * element located at that coordinate.
+     *
+     * This method prevents from deleting cells defined by the initial 
+     * configuration file. It also ensures valid coordinate pairs
+     *
+     * @param r - an integer representing the row
+     * @param c - an integer representing the column
+     *
+     * @return true if element was deleted at (r,c) in the board,
+     *         false otherwise 
+     */
     public boolean deleteElement(int r, int c){
         // invalid coorindates
         if ( !validateCoords(r, c) ){
@@ -474,8 +509,19 @@ public class SudokuModel {
      * creates a formatted sudoku board
      */
     public String toString() {
-        int linelen = 2 * BOARD_DIM + 3 + 2 * ((BOARD_DIM/this.box)-1);
+        //                            3
+        int linelen = 2 * BOARD_DIM + 4 + 2 * ((BOARD_DIM/this.box)-1);
         String board = "\n";
+        //
+        board += " | ";
+        for (int j = 0; j < BOARD_DIM; j++) {
+            if ( isMultiple(j, this.box) )
+                board += "| ";
+
+            board += j + " ";
+        }
+        board += "|\n";
+        //
         for (int i = 0; i < linelen; i++)
             board += "-";
 
@@ -487,7 +533,7 @@ public class SudokuModel {
                     board += "-";
                 board += "\n";
             }
-            board += "| ";
+            board += i + "| ";
             for (int j = 0; j < BOARD_DIM; j++) {
                 if ( isMultiple(j, this.box) )
                     board += "| ";
