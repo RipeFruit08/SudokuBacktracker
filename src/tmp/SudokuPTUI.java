@@ -32,6 +32,18 @@ public class SudokuPTUI{
             && SudokuModel.isNumeric(val);
     }
 
+    private void displayHelp(){
+        System.out.println("Enter one of the following commands:");
+        System.out.println("    (q)uit to quit sudoku");
+        System.out.println("    (s)olve to solve the puzzle");
+        System.out.println("    (v)alidate to validate the current board");
+        System.out.println("    (a)dd val row col to add val to the board at");
+        System.out.println("\tcoordinates (row, col)");
+        System.out.println("    (d)elete row col to delete the value from the");
+        System.out.println("\tboard at coordinate (row, col)"); 
+        System.out.println("    (h)elp to display this message again"); 
+    }
+
     /** 
      * processes the commands fed in by the user.
      *
@@ -47,6 +59,9 @@ public class SudokuPTUI{
         // quit | q
         else if ( cmdlst[0].equals("quit") || cmdlst[0].equals("q") )
             System.out.println("Quitting the puzzle"); 
+
+        else if ( cmdlst[0].equals("help") || cmdlst[0].equals("h") )
+            displayHelp();
 
         // solve
         else if (cmdlst[0].equals("solve") ){
@@ -100,9 +115,10 @@ public class SudokuPTUI{
             }
         }
 
-        else
-            System.out.println("not a valid cmd"); 
-
+        else{
+            System.out.print("Invalid Command; "); 
+            displayHelp();
+        }
         return false;
     }
 
