@@ -521,6 +521,7 @@ public class SudokuModel {
             board += j + " ";
         }
         board += "|\n";
+
         //
         for (int i = 0; i < linelen; i++)
             board += "-";
