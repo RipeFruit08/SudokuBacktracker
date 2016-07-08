@@ -60,25 +60,31 @@ public class SudokuPTUI{
         else if ( cmdlst[0].equals("quit") || cmdlst[0].equals("q") )
             System.out.println("Quitting the puzzle"); 
 
+        // help | q
         else if ( cmdlst[0].equals("help") || cmdlst[0].equals("h") )
             displayHelp();
 
-        // solve
-        else if (cmdlst[0].equals("solve") ){
+        // solve | s
+        else if (cmdlst[0].equals("solve") || cmdlst[0].equals("s") ){
+            long sTime = System.currentTimeMillis();
             System.out.println("The puzzle will be solved");
-            if( model.solve() )
+            boolean solved = model.solve();
+            long eTime = System.currentTimeMillis();
+            if( solved )
                 System.out.println("Solution:"); 
 
             else
                 System.out.println("No solution"); 
 
             System.out.println(model);
+            double time_exec = (eTime - sTime) / 1000.0;
+            System.out.printf("Puzzle was solved in %f seconds\n", time_exec);  
             return true;
         }
 
-        // validate
-        else if (cmdlst[0].equals("validate") ){
-            System.out.println("The puzzle will be validated");
+        // validate | v
+        else if (cmdlst[0].equals("validate") || cmdlst[0].equals("v") ){
+            System.out.print("Validating board... ");
             if ( !model.validate_board() )
                 System.out.println("The current board is not valid"); 
         
@@ -86,24 +92,27 @@ public class SudokuPTUI{
                 System.out.println("The current board is valid"); 
         }
 
-        // add row col value
-        else if (cmdlst[0].equals("add") ){
-            System.out.println("adding an element");
+        // add value row col | a value row col 
+        else if (cmdlst[0].equals("add") || cmdlst[0].equals("a") ){
+            //System.out.println("adding an element");
             if ( cmdlst.length == 4 && validateArgs(cmdlst[1], cmdlst[2],
                 cmdlst[3] ) ){
                 
-                int row = Integer.parseInt(cmdlst[1]);
-                int col = Integer.parseInt(cmdlst[2]);
-                int val = Integer.parseInt(cmdlst[3]);
+                int val = Integer.parseInt(cmdlst[1]);
+                int row = Integer.parseInt(cmdlst[2]);
+                int col = Integer.parseInt(cmdlst[3]);
                 System.out.printf("Placing %s at (%s, %s)\n", 
                     cmdlst[3], cmdlst[1], cmdlst[2]);  
                 model.addToBoard(row, col, val);
             }
+
+            else
+                System.out.println("Usage: (a)dd val row col"); 
         }
 
-        // del row col
-        else if (cmdlst[0].equals("del") ){
-            System.out.println("deleting an element");
+        // del row col | d row col 
+        else if (cmdlst[0].equals("del") || cmdlst[0].equals("d") ){
+            //System.out.println("deleting an element");
             if ( cmdlst.length == 3 && SudokuModel.isNumeric(cmdlst[1]) &&
                 SudokuModel.isNumeric(cmdlst[2])){
                 
@@ -113,8 +122,12 @@ public class SudokuPTUI{
                     cmdlst[1], cmdlst[2]);  
                 model.deleteElement(row, col);
             }
+
+            else
+                System.out.println("Usage: (d)el row col"); 
         }
 
+        // invalid comments 
         else{
             System.out.print("Invalid Command; "); 
             displayHelp();
@@ -124,6 +137,8 @@ public class SudokuPTUI{
 
     public void run(){
         boolean solved = false;
+        displayHelp();
+        long sTime = System.currentTimeMillis();
         while( !usrcmd.equals("q") && !usrcmd.equals("quit") ){
             System.out.println(model); 
             System.out.print("> "); 
@@ -132,6 +147,9 @@ public class SudokuPTUI{
             if (solved)
                 break;
         }
+        long eTime = System.currentTimeMillis();
+        double exec_time = (eTime - sTime) / 1000.0;
+        System.out.println("Program ran for " + exec_time + " seconds"); 
     }
 
 }
