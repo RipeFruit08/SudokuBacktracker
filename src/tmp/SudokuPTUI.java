@@ -66,6 +66,7 @@ public class SudokuPTUI{
 
         // solve | s
         else if (cmdlst[0].equals("solve") || cmdlst[0].equals("s") ){
+            /*
             long sTime = System.currentTimeMillis();
             System.out.println("The puzzle will be solved");
             boolean solved = model.solve();
@@ -78,7 +79,13 @@ public class SudokuPTUI{
 
             System.out.println(model);
             double time_exec = (eTime - sTime) / 1000.0;
-            System.out.printf("Puzzle was solved in %f seconds\n", time_exec);  
+            System.out.printf("Puzzle was solved in %f seconds\n", time_exec);
+            */
+            model.show_solution();
+            System.out.println("Solution: ");
+            System.out.println(model);
+            System.out.printf("The puzzle was solved in %f seconds\n",
+                model.get_solve_time() );  
             return true;
         }
 
@@ -101,8 +108,8 @@ public class SudokuPTUI{
                 int val = Integer.parseInt(cmdlst[1]);
                 int row = Integer.parseInt(cmdlst[2]);
                 int col = Integer.parseInt(cmdlst[3]);
-                System.out.printf("Placing %s at (%s, %s)\n", 
-                    cmdlst[3], cmdlst[1], cmdlst[2]);  
+                //System.out.printf("Placing %s at (%s, %s)\n", 
+                //    cmdlst[3], cmdlst[1], cmdlst[2]);  
                 model.addToBoard(row, col, val);
             }
 
@@ -118,13 +125,18 @@ public class SudokuPTUI{
                 
                 int row = Integer.parseInt(cmdlst[1]);
                 int col = Integer.parseInt(cmdlst[2]);
-                System.out.printf("Removing element from (%s, %s)\n", 
-                    cmdlst[1], cmdlst[2]);  
+                //System.out.printf("Removing element from (%s, %s)\n", 
+                //    cmdlst[1], cmdlst[2]);  
                 model.deleteElement(row, col);
             }
 
             else
                 System.out.println("Usage: (d)el row col"); 
+        }
+
+        // undo | u
+        else if (cmdlst[0].equals("undo") || cmdlst[0].equals("u") ){
+            model.undo();
         }
 
         // invalid comments 
@@ -149,7 +161,8 @@ public class SudokuPTUI{
         }
         long eTime = System.currentTimeMillis();
         double exec_time = (eTime - sTime) / 1000.0;
-        System.out.println("Program ran for " + exec_time + " seconds"); 
+        if (!solved)
+            System.out.println("Program ran for " + exec_time + " seconds"); 
     }
 
 }

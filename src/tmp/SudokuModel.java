@@ -14,10 +14,16 @@ public class SudokuModel {
 
     private int BOARD_DIM;
     private int box;
-    private int[][] board;
-    private int[][] refboard;
+    // list of lists of size 2 or 3 keeping track of undo moves 
+    // if size 2, it is a delete move with [r,c] coords as the elements
+    // if size 3, it is an add move with [r,c,v] as the elements
+    private ArrayList<ArrayList<Integer>> undos;
+    private int[][] board;         // 2-d grid
+    private int[][] solution;      // 2-d grid 
+    private int[][] refboard;      // 2-d grid 
     private int curRow;
     private int curCol;
+    private double solve_time;
 
     /**
      * Constructor for a SudokuConfig; takes in a Scanner as a parameter
@@ -35,6 +41,7 @@ public class SudokuModel {
             System.exit(-1);
         }
         String line = f.nextLine();
+        undos = new ArrayList<ArrayList<Integer>>();
 
         while ( true ){
             if ( line.isEmpty()) {
@@ -54,6 +61,7 @@ public class SudokuModel {
         this.BOARD_DIM = Integer.parseInt(line);
         box = (int)Math.sqrt(this.BOARD_DIM);
         this.board = new int[this.BOARD_DIM][this.BOARD_DIM];
+        this.solution = new int[this.BOARD_DIM][this.BOARD_DIM];
         this.refboard = new int[this.BOARD_DIM][this.BOARD_DIM];
 
         /* determining whether or not the coordinates has been initialized */
@@ -67,10 +75,36 @@ public class SudokuModel {
                     initCoord = true;
                 }
                 board[i][j] = Integer.parseInt(token[j], 16);
+                solution[i][j] = board[i][j];
                 refboard[i][j] = board[i][j];
             }
         }
         f.close();
+        
+        int tmpRow = this.curRow;
+        int tmpCol = this.curCol;
+        long sTime = System.currentTimeMillis();
+        boolean solved = solve();
+        long eTime = System.currentTimeMillis();
+        this.solve_time = (eTime - sTime) / 1000.0;
+        if ( !solved ){
+            System.out.println("The configuration file created a puzzle that" +
+                " cannot be solved");
+            System.exit(-1);
+        }
+
+        // moves puzzle solution into the solution grid
+        for ( int r = 0; r < BOARD_DIM; r++ ){
+            for ( int c = 0; c < BOARD_DIM; c++ ) {
+                int tmp = board[r][c];
+                board[r][c] = solution[r][c];
+                solution[r][c] = tmp;
+            }
+        }
+
+        this.curRow = tmpRow;
+        this.curCol = tmpCol;
+
     }
 
     /**
@@ -424,6 +458,12 @@ public class SudokuModel {
         }
 
         this.board[r][c] = v;
+        System.out.printf("%d was added to (%d, %d)\n", v, r, c);  
+        // adds the corresponding delete move
+        ArrayList<Integer> mv = new ArrayList<Integer>();
+        mv.add(r);
+        mv.add(c);
+        this.undos.add(mv);
         return true;
     }
 
@@ -458,8 +498,40 @@ public class SudokuModel {
             return false;
         }
 
+        // adds the corresponding add move
+        ArrayList<Integer> mv = new ArrayList<Integer>();
+        mv.add(r);
+        mv.add(c);
+        mv.add(this.board[r][c]);
+        this.undos.add(mv);
+        System.out.printf("%d was removed from (%d, %d)\n",
+            this.board[r][c], r, c);  
         this.board[r][c] = EMPTY;
         return true;
+    }
+
+    public void undo(){
+        if ( this.undos.size() == 0 )
+            System.out.println("Nothing to undo!");
+
+        else{
+            System.out.print("Undo-ing last move... "); 
+            int idx = this.undos.size() - 1; // index of most recent move
+            ArrayList<Integer> m = this.undos.remove(idx);
+            // undo-ing an add move -> delete that value
+            if ( m.size() == 2 )
+                deleteElement(m.get(0), m.get(1) );
+
+            else if ( m.size() == 3 )
+                addToBoard(m.get(0), m.get(1), m.get(2) );
+
+            else{
+                System.out.println("Something wrong happened in undo()");
+                System.exit(-1);
+            }
+
+            // undo-ing a delete move -> add the value back in
+        }
     }
 
     public boolean validate_one_box(int row, int col){
@@ -504,6 +576,15 @@ public class SudokuModel {
         
         return true;
     }
+
+    public void show_solution(){
+        for ( int r = 0; r < BOARD_DIM; r++ ){
+            for ( int c = 0; c < BOARD_DIM; c++ )
+                board[r][c] = solution[r][c];
+        }
+    }
+
+    public double get_solve_time(){ return this.solve_time; }
 
     /**
      * creates a formatted sudoku board
