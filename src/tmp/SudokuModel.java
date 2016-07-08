@@ -522,6 +522,7 @@ public class SudokuModel {
             if ( m.size() == 2 )
                 deleteElement(m.get(0), m.get(1) );
 
+            // undo-ing a delete move -> add the value back in
             else if ( m.size() == 3 )
                 addToBoard(m.get(0), m.get(1), m.get(2) );
 
@@ -530,7 +531,14 @@ public class SudokuModel {
                 System.exit(-1);
             }
 
-            // undo-ing a delete move -> add the value back in
+            // calling either addToBoard or deleteElement will cause a new
+            // move to be added to undos; most recent move needs to be 
+            // removed to prevent circular undos
+            // this hacky solution could be remedied by not calling those
+            // methods, assumining the coordinates are valid, and
+            // assigning directly to the board but seems less safe
+            this.undos.remove(idx);
+
         }
     }
 
