@@ -18,11 +18,13 @@ public class SudokuModel {
     // if size 2, it is a delete move with [r,c] coords as the elements
     // if size 3, it is an add move with [r,c,v] as the elements
     private ArrayList<ArrayList<Integer>> undos;
+    private int[][] moves;         // list of moves
     private int[][] board;         // 2-d grid
     private int[][] solution;      // 2-d grid 
     private int[][] refboard;      // 2-d grid 
     private int curRow;
     private int curCol;
+    private int curMove;
     private double solve_time;
 
     /**
@@ -63,6 +65,7 @@ public class SudokuModel {
         this.board = new int[this.BOARD_DIM][this.BOARD_DIM];
         this.solution = new int[this.BOARD_DIM][this.BOARD_DIM];
         this.refboard = new int[this.BOARD_DIM][this.BOARD_DIM];
+        int empties = 0;
 
         /* determining whether or not the coordinates has been initialized */
         boolean initCoord = false;
@@ -74,11 +77,15 @@ public class SudokuModel {
                     this.curCol = j;
                     initCoord = true;
                 }
-                board[i][j] = Integer.parseInt(token[j], 16);
-                solution[i][j] = board[i][j];
-                refboard[i][j] = board[i][j];
+                int val = Integer.parseInt(token[j], 16);
+                board[i][j] = val;
+                solution[i][j] = val;
+                refboard[i][j] = val;
+                empties = (val == EMPTY) ? empties + 1 : empties + 0;
             }
         }
+        this.moves = new int[empties][3];
+        this.curMove = 0;
         f.close();
         
         int tmpRow = this.curRow;
@@ -172,6 +179,9 @@ public class SudokuModel {
             //return true; don't think this is needed
         }
         board[curRow][curCol] = guess;
+        moves[curMove][0] = curRow;
+        moves[curMove][1] = curCol;
+        moves[curMove][2] = guess;
         return true;
         //System.out.printf("board[%d][%d] = %d\n", curRow, curCol, guess);  
     }
@@ -188,8 +198,10 @@ public class SudokuModel {
 
         int oldR = this.curRow;
         int oldC = this.curCol;
+        int oldM = this.curMove;
 
         for ( int i = 1; i < BOARD_DIM+1; i++){
+            // need to handle hints
             boolean boxed = makeSuccessor(i);
             //System.out.println(this); 
             if ( isValid() ){

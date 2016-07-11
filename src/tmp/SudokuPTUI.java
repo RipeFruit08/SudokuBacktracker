@@ -1,3 +1,8 @@
+/**
+ * Plain Text User Interface (PTUI) for Sudoku
+ *
+ * @author Stephen Kim
+ */
 import java.util.Scanner;
 
 public class SudokuPTUI{
@@ -48,7 +53,7 @@ public class SudokuPTUI{
      * processes the commands fed in by the user.
      *
      * valid commands include quitting, adding to board, deleting from board,
-     * solving board, and validating the board
+     * solving board, validating the board, and undoing
      */
     private boolean processCmds(String cmd){
         // splits by whitespace
@@ -147,6 +152,9 @@ public class SudokuPTUI{
         return false;
     }
 
+    /**
+     * method that runs the PTUI.
+     */
     public void run(){
         boolean solved = false;
         displayHelp();
