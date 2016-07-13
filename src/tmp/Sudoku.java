@@ -17,10 +17,13 @@ public class Sudoku{
 
         else{
             String filename = args[1];
-            System.out.println("gets here"); 
+            System.out.println("gets here");
+            
+            // gui
             if ( args[0].equals("gui") )
                 System.out.println("will run the gui...");
                 
+            // ptui
             else if ( args[0].equals("ptui") ){
                 System.out.println("will run the ptui");
                 SudokuPTUI ptui = new SudokuPTUI(filename);

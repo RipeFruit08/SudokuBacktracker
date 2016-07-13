@@ -47,6 +47,7 @@ public class SudokuPTUI{
         System.out.println("    (d)elete row col to delete the value from the");
         System.out.println("\tboard at coordinate (row, col)"); 
         System.out.println("    (h)elp to display this message again"); 
+        System.out.println("    hin(t) to fill one cell with the correct answer"); 
     }
 
     /** 
@@ -143,6 +144,10 @@ public class SudokuPTUI{
         else if (cmdlst[0].equals("undo") || cmdlst[0].equals("u") ){
             model.undo();
         }
+
+        // hint | t
+        else if (cmdlst[0].equals("hint") || cmdlst[0].equals("t") )
+            model.hint();
 
         // invalid comments 
         else{

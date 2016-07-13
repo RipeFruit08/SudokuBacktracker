@@ -25,6 +25,7 @@ public class SudokuModel {
     private int curRow;
     private int curCol;
     private int curMove;
+    private int curHint;
     private double solve_time;
 
     /**
@@ -108,6 +109,24 @@ public class SudokuModel {
                 solution[r][c] = tmp;
             }
         }
+
+        // populating hints array
+        int i = 0;
+        while ( i < empties ){
+            for ( int r = 0; r < BOARD_DIM; r++ ){
+                for ( int c = 0; c < BOARD_DIM; c++ ){
+                    if ( refboard[r][c] != solution[r][c] ){
+                        moves[i][0] = r;
+                        moves[i][1] = c;
+                        moves[i][2] = solution[r][c];
+                        i++;
+                        System.out.printf("%d being added at (%d, %d) at index %d\n", solution[r][c], r, c, i);  
+                    }
+                }
+            }
+        }
+
+        this.curHint = 0;
 
         this.curRow = tmpRow;
         this.curCol = tmpCol;
@@ -552,6 +571,14 @@ public class SudokuModel {
             this.undos.remove(idx);
 
         }
+    }
+
+    public void hint(){
+        if ( curHint >= moves.length ){
+            return;
+        }
+        addToBoard(moves[curHint][0], moves[curHint][1], moves[curHint][2]);
+        curHint++;
     }
 
     public boolean validate_one_box(int row, int col){
