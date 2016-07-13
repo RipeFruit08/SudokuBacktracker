@@ -1,3 +1,4 @@
+import javafx.application.Application;
 /**
  * Main program for this project
  *
@@ -20,8 +21,10 @@ public class Sudoku{
             System.out.println("gets here");
             
             // gui
-            if ( args[0].equals("gui") )
+            if ( args[0].equals("gui") ){
                 System.out.println("will run the gui...");
+                Application.launch(SudokuGUI.class, filename);
+            }
                 
             // ptui
             else if ( args[0].equals("ptui") ){
