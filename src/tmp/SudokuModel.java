@@ -120,7 +120,9 @@ public class SudokuModel {
                         moves[i][1] = c;
                         moves[i][2] = solution[r][c];
                         i++;
-                        System.out.printf("%d being added at (%d, %d) at index %d\n", solution[r][c], r, c, i);  
+                        //System.out.printf("%d being added at (%d, %d) at index"
+                        //    + " %d\n",
+                        //    solution[r][c], r, c, i);  
                     }
                 }
             }
@@ -631,7 +633,13 @@ public class SudokuModel {
         }
     }
 
+    /////////////
+    // GETTERS //
+    /////////////
+    public int get_board_dim(){ return this.BOARD_DIM; }
+    public int[][] get_board(){ return this.board; }
     public double get_solve_time(){ return this.solve_time; }
+
 
     /**
      * creates a formatted sudoku board
