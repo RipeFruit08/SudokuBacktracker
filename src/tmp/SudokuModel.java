@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class SudokuModel {
     
     // FIELDS
-    public static final int EMPTY = 0;
+    public static final int EMPTY = -1;
 
     private int BOARD_DIM;
     private int box;
@@ -71,14 +71,17 @@ public class SudokuModel {
         /* determining whether or not the coordinates has been initialized */
         boolean initCoord = false;
         for (int i = 0; i < BOARD_DIM; i++) {
-            String[] token = f.nextLine().split(" ");
+            String[] token = f.nextLine().trim().split(" +");
             for (int j = 0; j < BOARD_DIM; j++){
+                //System.out.println(token[j]); 
                 if ( !initCoord && token[j].equals("0") ){
                     this.curRow = i;
                     this.curCol = j;
                     initCoord = true;
                 }
-                int val = Integer.parseInt(token[j], 16);
+                String nTok = token[j];
+                System.out.println(nTok); 
+                int val = Integer.parseInt(nTok, 16);
                 board[i][j] = val;
                 solution[i][j] = val;
                 refboard[i][j] = val;
@@ -91,6 +94,8 @@ public class SudokuModel {
         
         int tmpRow = this.curRow;
         int tmpCol = this.curCol;
+        System.out.println("printing this"); 
+        System.out.println(this); 
         long sTime = System.currentTimeMillis();
         boolean solved = solve();
         long eTime = System.currentTimeMillis();
@@ -110,8 +115,12 @@ public class SudokuModel {
             }
         }
 
+        //System.out.println("showing solutions"); 
+        //show_solution();
+
         // populating hints array
         int i = 0;
+        /*
         while ( i < empties ){
             for ( int r = 0; r < BOARD_DIM; r++ ){
                 for ( int c = 0; c < BOARD_DIM; c++ ){
@@ -126,7 +135,7 @@ public class SudokuModel {
                     }
                 }
             }
-        }
+        }*/
 
         this.curHint = 0;
 
@@ -232,7 +241,7 @@ public class SudokuModel {
 
             if ( !boxed )
                 break;
-            board[curRow][curCol] = 0;
+            board[curRow][curCol] = EMPTY;
         }
 
         curRow = oldR;
@@ -293,12 +302,17 @@ public class SudokuModel {
         int[] numCount = new int[BOARD_DIM];
 
         /* Populating occurrences of each number in the column*/
+        //System.out.println("inside validate_col"); 
         for ( int r = 0; r < BOARD_DIM; r++ ){
             int cellVal = this.board[r][c];
-            if ( cellVal == 0 )
+            //System.out.println(cellVal); 
+            if ( cellVal == EMPTY )
                 continue;
             else{
-                numCount[cellVal-1]++;
+                if ( cellVal == 0 )
+                    numCount[BOARD_DIM-1]++;
+                else
+                    numCount[cellVal-1]++;
             }
 
         }
@@ -334,12 +348,18 @@ public class SudokuModel {
         int[] numCount = new int[BOARD_DIM];
 
         /* Populating occurrences of each number in the row*/
+        //System.out.println("inside validate_row"); 
         for ( int c = 0; c < BOARD_DIM; c++ ){
             int cellVal = this.board[r][c];
-            if ( cellVal == 0 )
+            //System.out.println(cellVal); 
+            if ( cellVal == EMPTY )
                 continue;
             else{
-                numCount[cellVal-1]++;
+                if ( cellVal == 0 )
+                    numCount[BOARD_DIM-1]++;
+                else
+                    numCount[cellVal-1]++;
+                //numCount[cellVal-1]++;
             }
 
         }
@@ -348,6 +368,7 @@ public class SudokuModel {
             if ( numCount[i] > 1 )
                 return false;
         }
+        //System.out.println("leaving validate_row"); 
         return true;
     }
 
@@ -377,10 +398,14 @@ public class SudokuModel {
                 for ( int c = curCol - (box-1); c <= curCol; c++ ){
                     int cellVal = this.board[r][c];
                     //System.out.printf(" %d", cellVal); 
-                    if ( cellVal == 0 )
+                    if ( cellVal == EMPTY )
                         continue;
                     else{
-                        numCount[cellVal-1]++;
+                        //numCount[cellVal-1]++;
+                        if ( cellVal == 0 )
+                            numCount[BOARD_DIM-1]++;
+                        else
+                            numCount[cellVal-1]++;
                     }
                 }
             }
@@ -408,7 +433,7 @@ public class SudokuModel {
     private boolean isGoal(){
         for (int i = 0; i < this.BOARD_DIM; i++) {
             for (int j = 0; j < this.BOARD_DIM; j++) {
-                if ( this.board[i][j] == 0)
+                if ( this.board[i][j] == EMPTY)
                     return false;
             }
         }
@@ -590,10 +615,14 @@ public class SudokuModel {
             for ( int c = col; c < col+box; c++ ){
                 int cellVal = this.board[r][c];
                 //System.out.printf("(%d, %d): %d\n", r, c, cellVal); 
-                if ( cellVal == 0 )
+                if ( cellVal == EMPTY )
                     continue;
                 else
-                    numCount[cellVal-1]++;
+                    //numCount[cellVal-1]++;
+                    if ( cellVal == 0 )
+                        numCount[BOARD_DIM-1]++;
+                    else
+                        numCount[cellVal-1]++;
             }
         }
 
@@ -676,7 +705,7 @@ public class SudokuModel {
                     board += "| ";
 
                 // populates the board
-                if ( this.board[i][j] == 0)
+                if ( this.board[i][j] == EMPTY)
                     board += ". ";
                 else
                     board += Integer.toHexString(this.board[i][j]).toUpperCase()
