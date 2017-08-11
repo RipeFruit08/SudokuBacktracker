@@ -9,7 +9,7 @@ public class Sudoku{
 
     public static void usageErr(){
         System.out.println("Usage: java Sudoku (gui | ptui) board-file");
-        System.exit(-1);
+        System.exit(1);
     }
 
     public static void main(String[] args){

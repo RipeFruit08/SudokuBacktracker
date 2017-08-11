@@ -98,6 +98,7 @@ public class SudokuModel {
         System.out.println(this); 
         long sTime = System.currentTimeMillis();
         boolean solved = solve();
+        //boolean solved = true;
         long eTime = System.currentTimeMillis();
         this.solve_time = (eTime - sTime) / 1000.0;
         if ( !solved ){
@@ -115,7 +116,7 @@ public class SudokuModel {
             }
         }
 
-        //System.out.println("showing solutions"); 
+        System.out.println("showing solutions"); 
         //show_solution();
 
         // populating hints array

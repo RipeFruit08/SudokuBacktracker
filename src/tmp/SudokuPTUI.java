@@ -108,6 +108,7 @@ public class SudokuPTUI{
         // add value row col | a value row col 
         else if (cmdlst[0].equals("add") || cmdlst[0].equals("a") ){
             //System.out.println("adding an element");
+            /*
             if ( cmdlst.length == 4 && validateArgs(cmdlst[1], cmdlst[2],
                 cmdlst[3] ) ){
                 
@@ -121,6 +122,21 @@ public class SudokuPTUI{
 
             else
                 System.out.println("Usage: (a)dd val row col"); 
+            */
+            try{
+                int val = Integer.parseInt(cmdlst[1], 16);
+                int row = Integer.parseInt(cmdlst[2]);
+                int col = Integer.parseInt(cmdlst[3]);
+                model.addToBoard(row, col, val);
+            }
+
+            catch (NumberFormatException nfe){
+                System.out.println("Usage: (a)dd val row col"); 
+            }
+
+            catch (Exception e){
+                System.out.println("Exception thrown from the model..."); 
+            }
         }
 
         // del row col | d row col 
