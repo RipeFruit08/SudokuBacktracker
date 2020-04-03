@@ -6,3 +6,18 @@ err
 
 # ignoring log.txt
 log.txt
+
+# ignore my shell scripts
+*.sh
+
+# ignore .idea folder
+*.idea
+
+# ignore intellij files
+*.iml
+
+# whatever the .DS_Store file does
+.DS_Store
+
+# out directory
+out/

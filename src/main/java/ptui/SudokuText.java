@@ -1,6 +1,6 @@
-import java.io.File;
+import main.java.models.SudokuModel;
+
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class SudokuText{
 

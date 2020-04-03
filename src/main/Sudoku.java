@@ -1,4 +1,10 @@
-import javafx.application.Application;
+package main;
+// TODO GUI portion of this
+//import javafx.application.Application;
+
+
+import main.java.ptui.SudokuPTUI;
+
 /**
  * Main program for this project
  *
@@ -8,11 +14,13 @@ import javafx.application.Application;
 public class Sudoku{
 
     public static void usageErr(){
-        System.out.println("Usage: java Sudoku (gui | ptui) board-file");
+        System.out.println("Usage: java main.Sudoku (gui | ptui) board-file");
         System.exit(1);
     }
 
     public static void main(String[] args){
+        String current = System.getProperty("user.dir");
+        System.out.println("Current dir: " + current);
         if ( args.length != 2)
             usageErr();
 
@@ -23,7 +31,7 @@ public class Sudoku{
             // gui
             if ( args[0].equals("gui") ){
                 System.out.println("will run the gui...");
-                Application.launch(SudokuGUI.class, filename);
+                //Application.launch(SudokuGUI.class, filename);
             }
                 
             // ptui

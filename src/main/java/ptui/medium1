@@ -1,6 +1,6 @@
 # This is a standard sudoku board with 3x3 boxes
 # Difficulty: Easy
-# source: iOS Sudoku game
+# source: iOS main.Sudoku game
 
 9
 0 0 4 2 0 6 0 9 0

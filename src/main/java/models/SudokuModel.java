@@ -1,3 +1,5 @@
+package main.java.models;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -296,7 +298,7 @@ public class SudokuModel {
      * than 1 
      *
      * @param c - integer denoting the column number to validate
-     * @return true if the column conforms to the rules of Sudoku columns
+     * @return true if the column conforms to the rules of main.Sudoku columns
      *
      */
     private boolean validate_col(int c){
@@ -339,7 +341,7 @@ public class SudokuModel {
      * than 1 
      *
      * @param r - integer denoting the row number to validate
-     * @return true if the row conforms to the rules of Sudoku row
+     * @return true if the row conforms to the rules of main.Sudoku row
      *
      */
     private boolean validate_row(int r){
@@ -384,7 +386,7 @@ public class SudokuModel {
      * than 1 
      *
      * @param r - integer denoting the row number to validate
-     * @return true if the row conforms to the rules of Sudoku row
+     * @return true if the row conforms to the rules of main.Sudoku row
      *
      */
     private boolean validate_box(){

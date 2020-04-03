@@ -1,12 +1,15 @@
+package main.java.ptui;
+
 /**
- * Plain Text User Interface (PTUI) for Sudoku
+ * Plain Text User Interface (PTUI) for main.Sudoku
  *
  * @author Stephen Kim
  */
 import java.util.Scanner;
+//import models
+import main.java.models.SudokuModel;
 
 public class SudokuPTUI{
-    
     private SudokuModel model;
     private Scanner inputParser;
     private String usrcmd;

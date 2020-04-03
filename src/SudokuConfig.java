@@ -2,7 +2,7 @@
  * @author Stephen Kim
  * Created: January 11th, 2016
  *
- * SudokuConfig.java defines what a Sudoku configuration (board) is as well as
+ * SudokuConfig.java defines what a main.Sudoku configuration (board) is as well as
  * implements methods necessary to execute a backtracking algorithm
  *
  */
@@ -107,7 +107,7 @@ public class SudokuConfig {
 
 
         }
-        // On any Sudoku board, if every row, col, and box is valid, then the
+        // On any main.Sudoku board, if every row, col, and box is valid, then the
         // total validations should be equal to 3 times BOARD_DIM
         if ( validations != 3* this.BOARD_DIM)
             return false;
