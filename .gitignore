@@ -1,3 +1,6 @@
+# ignoring .vscode directory
+.vscode/
+
 # ignoring .class
 *.class
 
