@@ -24,6 +24,6 @@ following format:
   dimensions (e.g., a value of 9 indicates a standard Sudoku puzzle)
 - The lines immediately following the board's dimensions must include the
   contents of the board row by row starting from top to bottom.
-- Values of 0 indicate an empty cell
+- Values of -1 indicate an empty cell
 
 Note: Hexadoku is currently not supported
